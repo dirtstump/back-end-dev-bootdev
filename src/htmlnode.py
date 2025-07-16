@@ -28,14 +28,24 @@ class HTMLNode():
         return props_html
 
 class LeafNode(HTMLNode):
-    def __init__(self, tag=None, value=None, props=None):
-        if value is None:
-            raise ValueError("error: LeafNode requires value data")
+    def __init__(self, tag, value, props=None):
         super().__init__(tag=tag, value=value, props=props)
 
     def to_html(self):
-        if self.value is None:
-            raise ValueError("error: LeafNode requires value")
-        if self.tag is None:
+        if not self.value:
+            raise ValueError("LeafNode requires value")
+        if not self.tag:
             return str(self.value)
         return f'<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>'
+
+class ParentNode(HTMLNode):
+    def __init__(self, tag, children, props=None):
+        super().__init__(tag=tag, children=children, props=props)
+
+    def to_html(self):
+        if not self.tag:
+            raise ValueError("ParentNode requires tag")
+        if not self.children:
+            raise ValueError("ParentNode requires children")
+
+        return f"<{self.tag}>{"".join([i.to_html() for i in self.children])}</{self.tag}>"
