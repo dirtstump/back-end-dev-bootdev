@@ -80,3 +80,18 @@ def split_nodes_link(old_nodes):
         if post_split:
             new_nodes.append(TextNode(post_split, TextType.TEXT))
     return new_nodes
+
+def text_to_textnodes(text):
+    """Split markdown text into text nodes"""
+    nodes = [TextNode(text, TextType.TEXT)]
+    delims = [
+        ("**", TextType.BOLD),
+        ("_", TextType.ITALIC),
+        ("`", TextType.CODE),
+    ]
+    # split for each delimitor
+    for i in delims:
+        nodes = split_nodes_delimiter(nodes, i[0], i[1])
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_link(nodes)
+    return nodes
