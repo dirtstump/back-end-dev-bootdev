@@ -47,5 +47,6 @@ class ParentNode(HTMLNode):
             raise ValueError("ParentNode requires tag")
         if not self.children:
             raise ValueError("ParentNode requires children")
-
+        if not isinstance(self.children, list):
+            raise TypeError("ParentNode requires children to be a list")
         return f"<{self.tag}>{"".join([i.to_html() for i in self.children])}</{self.tag}>"

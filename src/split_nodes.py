@@ -83,7 +83,7 @@ def split_nodes_link(old_nodes):
 
 def text_to_textnodes(text):
     """Split markdown text into text nodes"""
-    nodes = [TextNode(text, TextType.TEXT)]
+    nodes = [TextNode(text.replace("\n", " "), TextType.TEXT)]
     delims = [
         ("**", TextType.BOLD),
         ("_", TextType.ITALIC),
