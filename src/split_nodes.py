@@ -1,8 +1,10 @@
+"""Functions for splitting nodes into subnodes"""
 from textnode import TextNode, TextType
 from regex_nodes import extract_markdown_images, extract_markdown_links
 
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
+    """Split TEXT nodes based on a delimiter"""
     new_nodes = []
     for i in old_nodes:
         if i.text_type != TextType.TEXT:
@@ -21,6 +23,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     return new_nodes
 
 def split_nodes_image(old_nodes):
+    """Split nodes for image nodes"""
     new_nodes = []
     # loop through each node (i) passed to function
     for i in old_nodes:
@@ -52,6 +55,7 @@ def split_nodes_image(old_nodes):
 
 
 def split_nodes_link(old_nodes):
+    """Split TEXT nodes into sub nodes if they contain markdown"""
     new_nodes = []
     # loop through each node (i) passed to function
     for i in old_nodes:

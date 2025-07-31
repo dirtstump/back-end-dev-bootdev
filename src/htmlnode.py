@@ -1,4 +1,7 @@
+"""HTML Node classes"""
+
 class HTMLNode():
+    """Base node for Parent and Leaf nodes"""
     def __init__(self, tag=None, value=None, children=None, props=None):
         self.tag = tag
         self.value = value
@@ -17,9 +20,11 @@ class HTMLNode():
         return "\n".join(repr_list or ["None"])
 
     def to_html(self):
+        """To be implememnted by Leaf and Parent nodes"""
         raise NotImplementedError
 
     def props_to_html(self):
+        """For converting a prop to HTML format"""
         if self.props is None:
             return ""
         props_html = ""
@@ -28,6 +33,7 @@ class HTMLNode():
         return props_html
 
 class LeafNode(HTMLNode):
+    """HTML node with text, no children"""
     def __init__(self, tag, value, props=None):
         super().__init__(tag=tag, value=value, props=props)
 
@@ -39,6 +45,7 @@ class LeafNode(HTMLNode):
         return f'<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>'
 
 class ParentNode(HTMLNode):
+    """For HTML nodes with children, no text"""
     def __init__(self, tag, children, props=None):
         super().__init__(tag=tag, children=children, props=props)
 
