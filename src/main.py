@@ -1,16 +1,17 @@
 """main function of this directory, nothing really going on yet"""
 from website_functions import (
     copy_to_destination,
-    generate_page,
+    generate_to_destination,
 )
 
 def main():
     """main function"""
-    source = "static/"
+    copy_source = "static/"
+    generate_source = "content/"
     destination = "public/"
-    copy_to_destination(source, destination)
-    generate_page("content/index.md", "template.html", "public/index.html")
-
+    template = "template.html"
+    copy_to_destination(copy_source, destination)
+    generate_to_destination(generate_source, template, destination)
 
 
 if __name__ == "__main__":
