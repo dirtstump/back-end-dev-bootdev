@@ -9,7 +9,7 @@ def main():
     source = "static/"
     destination = "public/"
     copy_to_destination(source, destination)
-    generate_page("content/index.md", "template.html", "public/index.md")
+    generate_page("content/index.md", "template.html", "public/index.html")
 
 
 
