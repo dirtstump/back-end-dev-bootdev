@@ -3,6 +3,8 @@ import os
 import shutil
 import re
 
+from markdown_to_html import markdown_to_html_node
+
 def copy_to_destination(source, destination):
     """function for copying directory and contents to new directory"""
     print(f"Copying directory tree {source} to {destination}")
@@ -41,7 +43,34 @@ def copy_to_destination_helper(source, destination):
 
 def extract_title(markdown):
     """extract the header (first line starting with "# ") from the markdown"""
-    header = re.match(r"# (.+)", markdown).group(1)
+    header = re.search(r"^# (.+)", markdown, re.MULTILINE)
     if not header:
         raise ValueError("error: No header")
-    return header
+    return header.group(1)
+
+def generate_page(from_path, template_path, dest_path):
+    """generate webpage from template and markdown"""
+    print(f"Generating page from {from_path} to {dest_path} using {template_path}")
+    # check for path validity
+    if not os.path.exists(from_path):
+        raise ValueError(f"invalid 'from_path': {from_path}")
+    if not os.path.isfile(from_path):
+        raise ValueError(f"'from_path' must be a file: {from_path}")
+    if not os.path.exists(template_path):
+        raise ValueError(f"invalid 'template_path': {template_path}")
+    if not os.path.isfile(template_path):
+        raise ValueError(f"'template_path' must be a file: {template_path}")
+
+    with open(from_path) as f:
+        markdown = f.read()
+    with open(template_path) as f:
+        template = f.read()
+
+    html = markdown_to_html_node(markdown).to_html()
+    title = extract_title(markdown)
+    template.replace("{{ Title }}", title)
+    template.replace("{{ Content }}", html)
+
+    if not os.path.exists(os.path.dirname(dest_path)):
+        os.makedirs(os.path.dirname(dest_path))
+    template.write(dest_path)
