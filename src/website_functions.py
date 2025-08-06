@@ -10,10 +10,13 @@ def copy_to_destination(source, destination):
     print(f"Copying directory tree {source} to {destination}")
     if not os.path.exists(source):
         raise ValueError(f"source not found: {source}")
-    if not os.path.exists(destination):
-        raise ValueError(f"destination not found: {destination}")
-    print(f"Removing directory tree: {destination}")
-    shutil.rmtree(destination)
+    if os.path.exists(destination):
+        print(f"{destination} exists")
+        print(f"Removing directory tree: {destination}")
+        shutil.rmtree(destination)
+    else:
+        print(f"{destination} does not exist")
+    print(f"Making {destination}")
     os.mkdir(destination)
     print("Starting recursive function")
     copy_to_destination_helper(source, destination)
