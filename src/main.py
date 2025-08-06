@@ -1,4 +1,6 @@
 """main function of this directory, nothing really going on yet"""
+import os
+import sys
 from website_functions import (
     copy_to_destination,
     generate_to_destination,
@@ -6,12 +8,16 @@ from website_functions import (
 
 def main():
     """main function"""
+    basepath = sys.argv[0]
+    if not basepath:
+        basepath = "/"
+    print(basepath)
     copy_source = "static/"
     generate_source = "content/"
-    destination = "public/"
+    destination = "docs/"
     template = "template.html"
     copy_to_destination(copy_source, destination)
-    generate_to_destination(generate_source, template, destination)
+    generate_to_destination(generate_source, template, destination, basepath)
 
 
 if __name__ == "__main__":

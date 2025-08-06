@@ -48,7 +48,7 @@ def extract_title(markdown):
         raise ValueError("error: No header")
     return header.group(1)
 
-def generate_to_destination(source, template_path, destination):
+def generate_to_destination(source, template_path, destination, basepath):
     """function for copying directory and contents to new directory"""
     print(f"Generating from directory tree {source} to {destination}")
     if not os.path.exists(source):
@@ -60,9 +60,9 @@ def generate_to_destination(source, template_path, destination):
     if not os.path.isfile(template_path):
         raise ValueError(f"'template_path' must be a file: {template_path}")
     print("Starting recursive function")
-    generate_to_destination_helper(source, template_path, destination)
+    generate_to_destination_helper(source, template_path, destination, basepath)
 
-def generate_to_destination_helper(source, template_path, destination):
+def generate_to_destination_helper(source, template_path, destination, basepath):
     """function for copying directory and contents to new directory"""
     print(f"Current source: {source}")
     print(f"Current destination: {destination}")
@@ -80,16 +80,16 @@ def generate_to_destination_helper(source, template_path, destination):
                 continue
             i_new = i_new.replace(".md", ".html")
             print(f"Generating file: {i_path}")
-            generate_page(i_path, template_path, i_new)
+            generate_page(i_path, template_path, i_new, basepath)
             continue
         if os.path.isdir(i_path):
             print(f"Making directory: {i_new}")
             os.mkdir(i_new)
-            generate_to_destination_helper(i_path, template_path, i_new)
+            generate_to_destination_helper(i_path, template_path, i_new, basepath)
             continue
         raise TypeError("object is neither file nor directory, so idk what's happening here")
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
     """generate webpage from template and markdown"""
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     # check for path validity
@@ -107,6 +107,8 @@ def generate_page(from_path, template_path, dest_path):
     title = extract_title(markdown)
     template = template.replace("{{ Title }}", title)
     template = template.replace("{{ Content }}", html)
+    template = template.replace('href="/', f'href="{basepath}')
+    template = template.replace('src="/', f'src="{basepath}')
 
     if not os.path.exists(os.path.dirname(dest_path)):
         os.makedirs(os.path.dirname(dest_path))
