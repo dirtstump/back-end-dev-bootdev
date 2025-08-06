@@ -1,5 +1,4 @@
 """main function of this directory, nothing really going on yet"""
-import os
 import sys
 from website_functions import (
     copy_to_destination,
