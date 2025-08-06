@@ -7,7 +7,7 @@ from website_functions import (
 
 def main():
     """main function"""
-    basepath = sys.argv[0]
+    basepath = sys.argv[1]
     if not basepath:
         basepath = "/"
     print(basepath)
